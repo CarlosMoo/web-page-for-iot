@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="result">
+  <div class="container">
     <div class="column is-4-desktop">
           <div class="card">
   <div class="card-image">
@@ -30,10 +30,9 @@
   </div>
 </div>
     </div>
-    <h1>{{result.feeds}}</h1>
-      <h1>{{promedio}}</h1>
-      <h1>{{maximo}}</h1>
-      <h1>{{result.feeds.length}}</h1>
+    <h1>{{result.channel.name}}</h1>
+    <h1>{{result.feeds[0].field1}}</h1>
+    <h1>{{promedio}}</h1>
     </div>
 </template>
 
@@ -44,29 +43,21 @@ import axios from 'axios';
 
 export default {
   name: 'Home',
-  components: {
-  },
-
-  // async created(){
-  //   const { data } = await axios.get("https://api.thingspeak.com/channels/1534154/feeds.json");
-  //   console.log(data);
-  // },
-  methods:{
-
-
-  },
-
   data: () => ({
     result: [],
     promedio: 0,
     maximo: 0,
   }),
+  components: {
+  },
+  methods:{
+  },
   mounted() {
     axios.get("https://api.thingspeak.com/channels/1534154/feeds.json").then((result) => {
       this.result = result.data;
 
     for (var i = 0; i <= this.result.feeds.length; i++) {
-        this.promedio += this.result.feeds.entry_id[i]
+        this.promedio += parseInt(this.result.feeds[i].field1)
     }
     this.promedio = this.promedio/this.result.feeds.length
 
