@@ -42,10 +42,8 @@ export default {
       this.options
     );
   },
-  watch: {
-    chart () {
-      this.$data.chart.update()
-    }
+  created() {
+    this.renderChart()
   }
 };
 </script>
