@@ -23,7 +23,7 @@ export default {
     borderColor,
     pointBorderColor,
     pointBackgroundColor,
-    backgroundColor
+    backgroundColor,
     } = this.chartColors;
     this.renderChart(
       {
@@ -44,7 +44,7 @@ export default {
   },
   watch: {
     chart () {
-      this.$data._chart.update()
+      this.$data.chart.update()
     }
   }
 };

@@ -1,116 +1,102 @@
 <template>
   <div class="container">
-    <div class="column is-8-desktop">
+    <div class="column is-6-desktop">
+      <div class="card">
+        <div class="card-content">
+          <div class="media">
+            <div class="media-content">
+              <p class="title is-4">Temperatura</p>
+              <p class="subtitle is-6">Consulte las últimas mediciones</p>
+            </div>
+          </div>
+          <div class="content">
+            <LineChart
+                :chartData="arrData"
+                :options="chartOptions"
+                :chartColors="recoveredColors"
+                label="Temperatura"
+              />
+            <b-button
+              expanded
+              class="is-success is-rounded"
+              label="Promedio"
+              type="is-light"
+              @click="promedium"/>
+            
+            <p style="margin-top: 20px; font-weight: bold">{{promedio}}</p>
+            <b-button
+              expanded
+              class="is-info is-rounded"
+              label="Maximo"
+              type="is-light"
+              @click="maximum"
+            />
+            <p style="margin-top: 20px; font-weight: bold">{{maximo}}</p>
+            <b-button
+              expanded
+              class="is-link is-rounded"
+              label="Minimo"
+              type="is-light"
+              @click="minimum"
+            />
+            <p style="margin-top: 20px; font-weight: bold">{{minimo}}</p>
+            <b-button
+              expanded
+              class="is-warning is-rounded"
+              label="Extraer"
+              type="is-light"
+              @click="extraer"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="column is-6-desktop">
       <div class="card">
   
         <div class="card-content">
           <div class="media">
-            <div class="media-left">
-              <figure class="image is-48x48">
-                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-              </figure>
-            </div>
             <div class="media-content">
-              <p class="title is-4">John Smith</p>
-              <p class="subtitle is-6">@johnsmith</p>
+              <p class="title is-4">Humedad</p>
+              <p class="subtitle is-6">Consulte las últimas mediciones</p>
             </div>
           </div>
 
     <div class="content">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-      <a href="#">#css</a> <a href="#">#responsive</a>
-      <br>
-      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-      <LineChart
-          :chartData="arrData"
+      <LineChart2
+          :chartData="arrData2"
           :options="chartOptions"
-          :chartColors="recoveredColors"
-          label="Temperatura"
+          :chartColors="recoveredColors2"
+          label="Humedad"
         />
       <b-button
         expanded
-        class="is-white-reaction"
+        class="is-success is-rounded"
         label="Promedio"
         type="is-light"
-        @click="promedium"
+        @click="promediumHum"
       />
+      <p style="margin-top: 20px; font-weight: bold">{{promedioHum}}</p>
       <b-button
         expanded
-        class="is-white-reaction"
+        class="is-info is-rounded"
         label="Maximo"
         type="is-light"
-        @click="maximum"
+        @click="maximumHum"
       />
+      <p style="margin-top: 20px; font-weight: bold">{{maximoHum}}</p>
       <b-button
         expanded
-        class="is-white-reaction"
+        class="is-link is-rounded"
         label="Minimo"
         type="is-light"
-        @click="minimum"
+        @click="minimumHum"
       />
+      <p style="margin-top: 20px; font-weight: bold">{{minimoHum}}</p>
       <b-button
         expanded
-        class="is-white-reaction"
-        label="Extraer"
-        type="is-light"
-        @click="extraer"
-      />
-    </div>
-  </div>
-</div>
-    </div>
-    <div class="column is-4-desktop">
-      <div class="card">
-  
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-48x48">
-                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="media-content">
-              <p class="title is-4">John Smith</p>
-              <p class="subtitle is-6">@johnsmith</p>
-            </div>
-          </div>
-
-    <div class="content">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-      <a href="#">#css</a> <a href="#">#responsive</a>
-      <br>
-      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-      <LineChart
-          :chartData="arrData"
-          :options="chartOptions"
-          label="Temperatura"
-        />
-      <b-button
-        expanded
-        class="is-white-reaction"
-        label="Promedio"
-        type="is-light"
-        @click="promedium"
-      />
-      <b-button
-        expanded
-        class="is-white-reaction"
-        label="Maximo"
-        type="is-light"
-        @click="maximum"
-      />
-      <b-button
-        expanded
-        class="is-white-reaction"
-        label="Minimo"
-        type="is-light"
-        @click="minimum"
-      />
-      <b-button
-        expanded
-        class="is-white-reaction"
+        class="is-warning is-rounded"
         label="Extraer"
         type="is-light"
         @click="extraer"
@@ -130,7 +116,7 @@
           :options="chartOptions"
           label="Humedad"
         />
-    </div>
+</div>
 </template>
 
 <script>
@@ -147,6 +133,9 @@ export default {
     promedio: 0,
     maximo: 0,
     minimo: 0,
+    promedioHum: 0,
+    maximoHum: 0,
+    minimoHum: 0,
     arrData: [],
     arrData2: [],
     chartOptions: {
@@ -158,6 +147,13 @@ export default {
         pointBorderColor: "#4E5E66",
         pointBackgroundColor: "#31E981",
         backgroundColor: "#31E981"
+      },
+
+    recoveredColors2: {
+    borderColor: "#4E5E66",
+    pointBorderColor: "#4E5E66",
+    pointBackgroundColor: "#c237db",
+    backgroundColor: "#c237db"
       },
   }),
   components: {
@@ -191,6 +187,26 @@ export default {
         arr3.push(el.created_at.substring(0, 10))
       });
       console.log(arr3);
+    },
+    promediumHum() {
+      this.result.feeds.forEach(el => {
+        this.promedioHum += parseFloat(el.field2)/parseFloat(this.result.channel.last_entry_id)
+      })
+      this.promedioHum = this.promedioHum.toFixed(2)
+    },
+    maximumHum() {
+      var arr1 = []
+      this.result.feeds.forEach(el => {
+        arr1.push(parseFloat(el.field2))
+      });
+      this.maximoHum = Math.max(...arr1)
+    },
+    minimumHum() {
+      var arr2 = []
+      this.result.feeds.forEach(el => {
+        arr2.push(parseFloat(el.field2))
+      });
+      this.minimoHum = Math.min(...arr2)
     },
   },
   async mounted() {
