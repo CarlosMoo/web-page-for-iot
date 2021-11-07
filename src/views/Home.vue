@@ -59,17 +59,54 @@
         </div>
       </div>
     </div>
-    <h1>{{result}}</h1>
-    <b-field label="Rounded">
-      <b-input placeholder="No label" v-model="today" rounded></b-input>
-    </b-field>
-    <h1 v-if="resultprom !== 'NaN'">{{resultprom}}</h1>
-    <h1 v-else-if="resultprom == 'NaN'">Sin resultado</h1>
-    <b-button type="is-danger" label="Saka" @click="promediumtempday" />
-    <h1>{{resultmax}}</h1>
-    <b-button type="is-danger" label="Saka" @click="maxtempday" />
-    <h1>{{resultmin}}</h1>
-    <b-button type="is-danger" label="Saka" @click="mintempday" />
+
+    <div class="columns">
+        <div class="column is-6-desktop">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title is-4">Temperatura</p>
+                <p class="subtitle is-6">Consulte los datos de un día en específico</p>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <b-field label="Digite la fecha que quiera consultar">
+              <b-input placeholder="Ej. 03/11/2021" v-model="today" rounded></b-input>
+            </b-field>
+              <h1 v-if="resultprom !== 'NaN'">{{resultprom}}</h1>
+              <h1 v-else-if="resultprom == 'NaN'">Sin resultado</h1>
+            <b-button class= "is-success is-rounded" type="is-light" label="Promedio" @click="promediumtempday" />
+              <h1>{{resultmax}}</h1>
+            <b-button class="is-info is-rounded" type="is-light" label="Máximo" @click="maxtempday" />
+              <h1>{{resultmin}}</h1>
+            <b-button class="is-link is-rounded" type="is-light" label="Mínimo" @click="mintempday" />
+          </div>
+        </div>
+
+        <div class="column is-6-desktop">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title is-4">Humedad</p>
+                <p class="subtitle is-6">Consulte los datos de un día en específico</p>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <b-field label="Digite la fecha que quiera consultar">
+              <b-input placeholder="Ej. 03/11/2021" v-model="todayhum" rounded></b-input>
+            </b-field>
+              <h1 v-if="resultpromhum !== 'NaN'">{{resultpromhum}}</h1>
+              <h1 v-else-if="resultpromhum == 'NaN'">Sin resultado</h1>
+            <b-button class="is-success is-rounded" type="is-light" label="Promedio" @click="promediumhumday" />
+              <h1>{{resultmaxhum}}</h1>
+            <b-button class="is-info is-rounded" type="is-light" label="Máximo" @click="maxhumday" />
+              <h1>{{resultminhum}}</h1>
+            <b-button class="is-link is-rounded" type="is-light" label="Mínimo" @click="minhumday" />
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -90,9 +127,13 @@
       maximoHum: 0,
       minimoHum: 0,
       today: '',
+      todayhum: '',
       resultprom: 0,
       resultmax: 0,
       resultmin: 0,
+      resultpromhum:0,
+      resultmaxhum: 0,
+      resultminhum: 0,
       arrData: [],
       arrData2: [],
       chartOptions: {
@@ -169,7 +210,7 @@
         var day = 0
         this.result.feeds.forEach(el => {
           const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
-          if (date == this.today) {
+          if (date == this.todayhum) {
             arrDay += parseFloat(el.field1)
             day++
           }
@@ -196,6 +237,39 @@
           }
         });
         this.resultmin = Math.min(...arrDay2)
+      },
+      promediumhumday() {
+        var arrDay = 0
+        var day = 0
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date == this.todayhum) {
+            arrDay += parseFloat(el.field2)
+            day++
+          }
+        });
+        this.resultpromhum = arrDay / day
+        this.resultpromhum = this.resultpromhum.toFixed(2)
+      },
+      maxhumday() {
+        var arrDay1 = []
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date == this.todayhum) {
+            arrDay1.push(parseFloat(el.field2))
+          }
+        });
+        this.resultmaxhum = Math.max(...arrDay1)
+      },
+      minhumday() {
+        var arrDay2 = []
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date == this.todayhum) {
+            arrDay2.push(parseFloat(el.field2))
+          }
+        });
+        this.resultminhum = Math.min(...arrDay2)
       }
     },
     async created() {
