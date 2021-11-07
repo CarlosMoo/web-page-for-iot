@@ -27,7 +27,7 @@
               <p style="margin-top: 20px; font-weight: bold">{{maximo}}</p>
               <b-button expanded class="is-link is-rounded" label="Minimo" type="is-light" @click="minimum" />
               <p style="margin-top: 20px; font-weight: bold">{{minimo}}</p>
-              <b-button expanded class="is-warning is-rounded" label="Extraer" type="is-light" @click="extraer" />
+              <b-button expanded class="is-warning is-rounded is-hidden" label="Extraer" type="is-light" @click="extraer"/>
             </div>
           </div>
         </div>
@@ -53,59 +53,63 @@
               <p style="margin-top: 20px; font-weight: bold">{{maximoHum}}</p>
               <b-button expanded class="is-link is-rounded" label="Minimo" type="is-light" @click="minimumHum" />
               <p style="margin-top: 20px; font-weight: bold">{{minimoHum}}</p>
-              <b-button expanded class="is-warning is-rounded" label="Extraer" type="is-light" @click="extraer" />
+              <b-button expanded class="is-warning is-rounded is-hidden" label="Extraer" type="is-light" @click="extraer" />
             </div>
           </div>
         </div>
       </div>
     </div>
-
+    
     <div class="columns">
         <div class="column is-6-desktop">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title is-4">Temperatura</p>
-                <p class="subtitle is-6">Consulte los datos de un día en específico</p>
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-content">
+                  <p class="title is-4">Temperatura</p>
+                  <p class="subtitle is-6">Consulte los datos de un día en específico</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="content">
-            <b-field label="Digite la fecha que quiera consultar">
-              <b-input placeholder="Ej. 03/11/2021" v-model="today" rounded></b-input>
-            </b-field>
-              <h1 v-if="resultprom !== 'NaN'">{{resultprom}}</h1>
-              <h1 v-else-if="resultprom == 'NaN'">Sin resultado</h1>
-            <b-button class= "is-success is-rounded" type="is-light" label="Promedio" @click="promediumtempday" />
-              <h1>{{resultmax}}</h1>
-            <b-button class="is-info is-rounded" type="is-light" label="Máximo" @click="maxtempday" />
-              <h1>{{resultmin}}</h1>
-            <b-button class="is-link is-rounded" type="is-light" label="Mínimo" @click="mintempday" />
+            <div style="padding: 20px" class="content">
+              <b-field label="Digite la fecha que quiera consultar">
+                <b-input placeholder="Ej. 03/11/2021" v-model="today" rounded></b-input>
+              </b-field>
+                <p style="margin-top: 20px; font-weight: bold" v-if="resultprom !== 'NaN'">{{resultprom}}</p>
+                <p style="margin-top: 20px; font-weight: bold" v-else-if="resultprom == 'NaN'">Sin resultado</p>
+              <b-button expanded class= "is-success is-rounded" type="is-light" label="Promedio" @click="promediumtempday" />
+                <p style="margin-top: 20px; font-weight: bold">{{resultmax}}</p>
+              <b-button expanded class="is-info is-rounded" type="is-light" label="Máximo" @click="maxtempday" />
+                <p style="margin-top: 20px; font-weight: bold">{{resultmin}}</p>
+              <b-button expanded class="is-link is-rounded" type="is-light" label="Mínimo" @click="mintempday" />
+            </div>
           </div>
         </div>
 
         <div class="column is-6-desktop">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title is-4">Humedad</p>
-                <p class="subtitle is-6">Consulte los datos de un día en específico</p>
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-content">
+                  <p class="title is-4">Humedad</p>
+                  <p class="subtitle is-6">Consulte los datos de un día en específico</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="content">
+          <div style="padding: 20px" class="content">
             <b-field label="Digite la fecha que quiera consultar">
               <b-input placeholder="Ej. 03/11/2021" v-model="todayhum" rounded></b-input>
             </b-field>
-              <h1 v-if="resultpromhum !== 'NaN'">{{resultpromhum}}</h1>
-              <h1 v-else-if="resultpromhum == 'NaN'">Sin resultado</h1>
-            <b-button class="is-success is-rounded" type="is-light" label="Promedio" @click="promediumhumday" />
-              <h1>{{resultmaxhum}}</h1>
-            <b-button class="is-info is-rounded" type="is-light" label="Máximo" @click="maxhumday" />
-              <h1>{{resultminhum}}</h1>
-            <b-button class="is-link is-rounded" type="is-light" label="Mínimo" @click="minhumday" />
+              <p style="margin-top: 20px; font-weight: bold" v-if="resultpromhum !== 'NaN'">{{resultpromhum}}</p>
+              <p style="margin-top: 20px; font-weight: bold" v-else-if="resultpromhum == 'NaN'">Sin resultado</p>
+            <b-button expanded class="is-success is-rounded" type="is-light" label="Promedio" @click="promediumhumday" />
+              <p style="margin-top: 20px; font-weight: bold">{{resultmaxhum}}</p>
+            <b-button expanded class="is-info is-rounded" type="is-light" label="Máximo" @click="maxhumday" />
+              <p style="margin-top: 20px; font-weight: bold">{{resultminhum}}</p>
+            <b-button expanded class="is-link is-rounded" type="is-light" label="Mínimo" @click="minhumday" />
           </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -210,7 +214,7 @@
         var day = 0
         this.result.feeds.forEach(el => {
           const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
-          if (date == this.todayhum) {
+          if (date == this.today) {
             arrDay += parseFloat(el.field1)
             day++
           }
