@@ -21,7 +21,6 @@
               <LineChart :chartData="arrData" :options="chartOptions" :chartColors="recoveredColors"
                 label="Temperatura" />
               <b-button expanded class="is-success is-rounded" label="Promedio" type="is-light" @click="promedium" />
-
               <p style="margin-top: 20px; font-weight: bold">{{promedio}}</p>
               <b-button expanded class="is-info is-rounded" label="Maximo" type="is-light" @click="maximum" />
               <p style="margin-top: 20px; font-weight: bold">{{maximo}}</p>
@@ -75,13 +74,13 @@
               <b-field label="Digite la fecha que quiera consultar">
                 <b-input placeholder="Ej. 03/11/2021" v-model="today" rounded></b-input>
               </b-field>
-                <p style="margin-top: 20px; font-weight: bold" v-if="resultprom !== 'NaN'">{{resultprom}}</p>
-                <p style="margin-top: 20px; font-weight: bold" v-else-if="resultprom == 'NaN'">Sin resultado</p>
               <b-button expanded class= "is-success is-rounded" type="is-light" label="Promedio" @click="promediumtempday" />
-                <p style="margin-top: 20px; font-weight: bold">{{resultmax}}</p>
+              <p style="margin-top: 20px; font-weight: bold" v-if="resultprom !== 'NaN'">{{resultprom}}</p>
+              <p style="margin-top: 20px; font-weight: bold" v-else-if="resultprom == 'NaN'">Sin resultado</p>
               <b-button expanded class="is-info is-rounded" type="is-light" label="Máximo" @click="maxtempday" />
-                <p style="margin-top: 20px; font-weight: bold">{{resultmin}}</p>
+              <p style="margin-top: 20px; font-weight: bold">{{resultmax}}</p>
               <b-button expanded class="is-link is-rounded" type="is-light" label="Mínimo" @click="mintempday" />
+              <p style="margin-top: 20px; font-weight: bold">{{resultmin}}</p>
             </div>
           </div>
         </div>
@@ -100,17 +99,45 @@
             <b-field label="Digite la fecha que quiera consultar">
               <b-input placeholder="Ej. 03/11/2021" v-model="todayhum" rounded></b-input>
             </b-field>
-              <p style="margin-top: 20px; font-weight: bold" v-if="resultpromhum !== 'NaN'">{{resultpromhum}}</p>
-              <p style="margin-top: 20px; font-weight: bold" v-else-if="resultpromhum == 'NaN'">Sin resultado</p>
             <b-button expanded class="is-success is-rounded" type="is-light" label="Promedio" @click="promediumhumday" />
-              <p style="margin-top: 20px; font-weight: bold">{{resultmaxhum}}</p>
+            <p style="margin-top: 20px; font-weight: bold" v-if="resultpromhum !== 'NaN'">{{resultpromhum}}</p>
+            <p style="margin-top: 20px; font-weight: bold" v-else-if="resultpromhum == 'NaN'">Sin resultado</p>
             <b-button expanded class="is-info is-rounded" type="is-light" label="Máximo" @click="maxhumday" />
-              <p style="margin-top: 20px; font-weight: bold">{{resultminhum}}</p>
+            <p style="margin-top: 20px; font-weight: bold">{{resultmaxhum}}</p>
             <b-button expanded class="is-link is-rounded" type="is-light" label="Mínimo" @click="minhumday" />
+            <p style="margin-top: 20px; font-weight: bold">{{resultminhum}}</p>
           </div>
         </div>
       </div>
     </div>
+    <div class="columns">
+        <div class="column is-12-desktop">
+          <div class="card mb-3">
+            <div class="card-content">
+              <b-table :data="result.feeds"
+                bordered
+                striped
+                narrowed
+                hoverable
+                mobile-cards
+              >
+                <b-table-column field="entry_id" label="ID" sortable v-slot="props" centered>
+                  {{ props.row.entry_id }}
+                </b-table-column>
+                <b-table-column field="created_at" label="Fecha" sortable v-slot="props" centered>
+                  {{ props.row.created_at.substring(0, 10) }}
+                </b-table-column>
+                <b-table-column field="field1" label="Temperatura" sortable v-slot="props" centered>
+                  {{ props.row.field1 }}
+                </b-table-column>
+                <b-table-column field="field2" label="Humedad" sortable v-slot="props" centered>
+                  {{ props.row.field2 }}%
+                </b-table-column>
+              </b-table>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 </template>
 
