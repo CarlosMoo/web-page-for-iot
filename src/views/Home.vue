@@ -111,33 +111,42 @@
       </div>
     </div>
     <div class="columns">
-        <div class="column is-12-desktop">
-          <div class="card mb-3">
-            <div class="card-content">
-              <b-table :data="result.feeds"
-                bordered
-                striped
-                narrowed
-                hoverable
-                mobile-cards
-              >
-                <b-table-column field="entry_id" label="ID" sortable v-slot="props" centered>
-                  {{ props.row.entry_id }}
-                </b-table-column>
-                <b-table-column field="created_at" label="Fecha" sortable v-slot="props" centered>
-                  {{ props.row.created_at.substring(0, 10) }}
-                </b-table-column>
-                <b-table-column field="field1" label="Temperatura" sortable v-slot="props" centered>
-                  {{ props.row.field1 }}
-                </b-table-column>
-                <b-table-column field="field2" label="Humedad" sortable v-slot="props" centered>
-                  {{ props.row.field2 }}%
-                </b-table-column>
-              </b-table>
-            </div>
+      <div class="column is-12-desktop">
+        <div class="card mb-3">
+          <div class="card-content">
+            <b-table :data="result.feeds"
+              bordered
+              striped
+              narrowed
+              hoverable
+              mobile-cards
+            >
+              <b-table-column field="entry_id" label="ID" sortable v-slot="props" centered>
+                {{ props.row.entry_id }}
+              </b-table-column>
+              <b-table-column field="created_at" label="Fecha" sortable v-slot="props" centered>
+                {{ props.row.created_at.substring(0, 10) }}
+              </b-table-column>
+              <b-table-column field="field1" label="Temperatura" sortable v-slot="props" centered>
+                {{ props.row.field1 }}
+              </b-table-column>
+              <b-table-column field="field2" label="Humedad" sortable v-slot="props" centered>
+                {{ props.row.field2 }}%
+              </b-table-column>
+            </b-table>
           </div>
         </div>
       </div>
+    </div>
+    <b-input v-model="weekstart"></b-input>
+    <b-input v-model="weekfinish"></b-input>
+    <b-button label="Promedio" @click="weekpromediumtemp"></b-button>
+    <p style="margin-top: 20px; font-weight: bold" v-if="weekresultpromtemp !== 'NaN'">{{weekresultpromtemp}}</p>
+    <p style="margin-top: 20px; font-weight: bold" v-else-if="weekresultpromtemp == 'NaN'">Sin resultado</p>
+    <b-button label="Maximo" @click="weekmaxtemp"></b-button>
+    <p>{{weekresultmaxtemp}}</p>
+    <b-button label="Minimo" @click="weekmintemp"></b-button>
+    <p>{{weekresultmintemp}}</p>
   </div>
 </template>
 
@@ -165,6 +174,11 @@
       resultpromhum:0,
       resultmaxhum: 0,
       resultminhum: 0,
+      weekstart: '',
+      weekfinish: '',
+      weekresultpromtemp: 0,
+      weekresultmaxtemp: 0,
+      weekresultmintemp: 0,
       arrData: [],
       arrData2: [],
       chartOptions: {
@@ -301,7 +315,40 @@
           }
         });
         this.resultminhum = Math.min(...arrDay2)
-      }
+      },
+      weekpromediumtemp() {
+        var arrWeek = 0
+        var week = 0
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date >= this.weekstart && date <= this.weekfinish) {
+            arrWeek += parseFloat(el.field1)
+            week++
+          }
+        });
+        this.weekresultpromtemp = arrWeek / week
+        this.weekresultpromtemp = this.weekresultpromtemp.toFixed(2)
+      },
+      weekmaxtemp() {
+        var arrWeek1 = []
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date >= this.weekstart && date <= this.weekfinish) {
+            arrWeek1.push(parseFloat(el.field1))
+          }
+        });
+        this.weekresultmaxtemp = Math.max(...arrWeek1)
+      },
+      weekmintemp() {
+        var arrWeek2 = []
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date >= this.weekstart && date <= this.weekfinish) {
+            arrWeek2.push(parseFloat(el.field1))
+          }
+        });
+        this.weekresultmintemp = Math.min(...arrWeek2)
+      },
     },
     async created() {
       await axios.get("https://api.thingspeak.com/channels/1534154/feeds.json").then((result) => {
