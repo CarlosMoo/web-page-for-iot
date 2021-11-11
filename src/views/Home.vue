@@ -19,7 +19,7 @@
             </div>
             <div class="content">
               <LineChart :chartData="arrData" :options="chartOptions" :chartColors="recoveredColors"
-                label="Temperatura" />
+                label="Temperatura" v-if="arrData.length"/>
               <b-button expanded class="is-success is-rounded" label="Promedio" type="is-light" @click="promedium" />
               <p style="margin-top: 20px; font-weight: bold">{{promedio}}</p>
               <b-button expanded class="is-info is-rounded" label="Maximo" type="is-light" @click="maximum" />
@@ -45,7 +45,7 @@
 
             <div class="content">
               <LineChart :chartData="arrData2" :options="chartOptions" :chartColors="recoveredColors2"
-                label="Humedad" />
+                label="Humedad" v-if="arrData.length"/>
               <b-button expanded class="is-success is-rounded" label="Promedio" type="is-light" @click="promediumHum" />
               <p style="margin-top: 20px; font-weight: bold">{{promedioHum}}</p>
               <b-button expanded class="is-info is-rounded" label="Maximo" type="is-light" @click="maximumHum" />
