@@ -110,10 +110,71 @@
         </div>
       </div>
     </div>
+
+    <div class="columns">
+      <div class="column is-6-desktop">
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+                <div class="media-content">
+                  <p class="title is-4">Temperatura</p>
+                  <p class="subtitle is-6">Consulte los datos de un rango de fechas en específico</p>
+                </div>
+            </div>
+          </div>
+          <div style="padding: 20px" class="content">
+            <b-field label="Digite el rango de fechas que quiera consultar"></b-field>
+              <b-input placeholder="Escriba el rango de inicio, Ej. 03/11/2021" rounded v-model="weekstart"></b-input>
+              <p style="margin-top: 20px;">-</p>
+              <b-input placeholder="Escriba el rango de finalización, Ej. 10/11/2021" rounded v-model="weekfinish"></b-input>
+            <b-button style="margin-top: 20px;" expanded class="is-success is-rounded" type="is-light" label="Promedio" @click="weekpromediumtemp"></b-button>
+            <p style="margin-top: 20px; font-weight: bold" v-if="weekresultpromtemp !== 'NaN'">{{weekresultpromtemp}}</p>
+            <p style="margin-top: 20px; font-weight: bold" v-else-if="weekresultpromtemp == 'NaN'">Sin resultado</p>
+            <b-button expanded class="is-info is-rounded" type="is-light" label="Maximo" @click="weekmaxtemp"></b-button>
+            <p style="margin-top: 20px; font-weight: bold">{{weekresultmaxtemp}}</p>
+            <b-button expanded class="is-link is-rounded" type="is-light" label="Minimo" @click="weekmintemp"></b-button>
+            <p style="margin-top: 20px; font-weight: bold">{{weekresultmintemp}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-6-desktop">
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+                <div class="media-content">
+                  <p class="title is-4">Humedad</p>
+                  <p class="subtitle is-6">Consulte los datos de un rango de fechas en específico</p>
+                </div>
+            </div>
+          </div>
+          <div style="padding: 20px" class="content">
+            <b-field label="Digite el rango de fechas que quiera consultar"></b-field>
+              <b-input placeholder="Escriba el rango de inicio, Ej. 03/11/2021" rounded v-model="weekstarthum"></b-input>
+              <p style="margin-top: 20px;">-</p>
+              <b-input placeholder="Escriba el rango de finalización, Ej. 10/11/2021" rounded v-model="weekfinishhum"></b-input>
+            <b-button style="margin-top: 20px;" expanded class="is-success is-rounded" type="is-light" label="Promedio" @click="weekpromediumhum"></b-button>
+            <p style="margin-top: 20px; font-weight: bold" v-if="weekresultpromhum !== 'NaN'">{{weekresultpromhum}}</p>
+            <p style="margin-top: 20px; font-weight: bold" v-else-if="weekresultpromhum == 'NaN'">Sin resultado</p>
+            <b-button expanded class="is-info is-rounded" type="is-light" label="Maximo" @click="weekmaxhum"></b-button>
+            <p style="margin-top: 20px; font-weight: bold">{{weekresultmaxhum}}</p>
+            <b-button expanded class="is-link is-rounded" type="is-light" label="Minimo" @click="weekminhum"></b-button>
+            <p style="margin-top: 20px; font-weight: bold">{{weekresultminhum}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="columns">
       <div class="column is-12-desktop">
         <div class="card mb-3">
           <div class="card-content">
+              <div class="media">
+                <div class="media-content">
+                  <p class="title is-4">Tabla de Mediciones</p>
+                  <p class="subtitle is-6">Consulte y ordene las mediciones realizadas</p>
+                </div>
+              </div>
             <b-table :data="result.feeds"
               bordered
               striped
@@ -138,15 +199,7 @@
         </div>
       </div>
     </div>
-    <b-input v-model="weekstart"></b-input>
-    <b-input v-model="weekfinish"></b-input>
-    <b-button label="Promedio" @click="weekpromediumtemp"></b-button>
-    <p style="margin-top: 20px; font-weight: bold" v-if="weekresultpromtemp !== 'NaN'">{{weekresultpromtemp}}</p>
-    <p style="margin-top: 20px; font-weight: bold" v-else-if="weekresultpromtemp == 'NaN'">Sin resultado</p>
-    <b-button label="Maximo" @click="weekmaxtemp"></b-button>
-    <p>{{weekresultmaxtemp}}</p>
-    <b-button label="Minimo" @click="weekmintemp"></b-button>
-    <p>{{weekresultmintemp}}</p>
+
   </div>
 </template>
 
@@ -176,9 +229,14 @@
       resultminhum: 0,
       weekstart: '',
       weekfinish: '',
+      weekstarthum: '',
+      weekfinishhum: '',
       weekresultpromtemp: 0,
       weekresultmaxtemp: 0,
       weekresultmintemp: 0,
+      weekresultpromhum: 0,
+      weekresultmaxhum: 0,
+      weekresultminhum: 0,
       arrData: [],
       arrData2: [],
       chartOptions: {
@@ -348,6 +406,39 @@
           }
         });
         this.weekresultmintemp = Math.min(...arrWeek2)
+      },
+      weekpromediumhum() {
+        var arrWeek = 0
+        var week = 0
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date >= this.weekstarthum && date <= this.weekfinishhum) {
+            arrWeek += parseFloat(el.field2)
+            week++
+          }
+        });
+        this.weekresultpromhum = arrWeek / week
+        this.weekresultpromhum = this.weekresultpromhum.toFixed(2)
+      },
+      weekmaxhum() {
+        var arrWeek1 = []
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date >= this.weekstarthum && date <= this.weekfinishhum) {
+            arrWeek1.push(parseFloat(el.field2))
+          }
+        });
+        this.weekresultmaxhum = Math.max(...arrWeek1)
+      },
+      weekminhum() {
+        var arrWeek2 = []
+        this.result.feeds.forEach(el => {
+          const date = moment(el.created_at.substring(0, 10), "YYYY-MM-DD").format("DD/MM/YYYY")
+          if (date >= this.weekstarthum && date <= this.weekfinishhum) {
+            arrWeek2.push(parseFloat(el.field2))
+          }
+        });
+        this.weekresultminhum = Math.min(...arrWeek2)
       },
     },
     async created() {
