@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <section class="hero" style="background-color: #233E8B">
+    <section class="hero mb-4" style="background-color: #233E8B">
       <div class="hero-body">
         <p class="title has-text-white">
           Monitoreo de Humedad y Temperatura
@@ -123,10 +123,11 @@
             </div>
           </div>
           <div style="padding: 20px" class="content">
-            <b-field label="Digite el rango de fechas que quiera consultar"></b-field>
-              <b-input placeholder="Escriba el rango de inicio, Ej. 03/11/2021" rounded v-model="weekstart"></b-input>
-              <p style="margin-top: 20px;">-</p>
-              <b-input placeholder="Escriba el rango de finalización, Ej. 10/11/2021" rounded v-model="weekfinish"></b-input>
+            <b-field label="Digite el rango de fechas que quiera consultar">
+              <b-input placeholder="Fecha inicial, Ej. 03/11/2021" rounded v-model="weekstart"></b-input>
+              <p class="m-2">-</p>
+              <b-input placeholder="Fecha final, Ej. 10/11/2021" rounded v-model="weekfinish"></b-input>
+            </b-field>
             <b-button style="margin-top: 20px;" expanded class="is-success is-rounded" type="is-light" label="Promedio" @click="weekpromediumtemp"></b-button>
             <p style="margin-top: 20px; font-weight: bold" v-if="weekresultpromtemp !== 'NaN'">{{weekresultpromtemp}}</p>
             <p style="margin-top: 20px; font-weight: bold" v-else-if="weekresultpromtemp == 'NaN'">Sin resultado</p>
@@ -149,10 +150,11 @@
             </div>
           </div>
           <div style="padding: 20px" class="content">
-            <b-field label="Digite el rango de fechas que quiera consultar"></b-field>
-              <b-input placeholder="Escriba el rango de inicio, Ej. 03/11/2021" rounded v-model="weekstarthum"></b-input>
-              <p style="margin-top: 20px;">-</p>
-              <b-input placeholder="Escriba el rango de finalización, Ej. 10/11/2021" rounded v-model="weekfinishhum"></b-input>
+            <b-field label="Digite el rango de fechas que quiera consultar">
+              <b-input placeholder="Fecha inicial, Ej. 03/11/2021" rounded v-model="weekstarthum"></b-input>
+              <p class="m-2">-</p>
+              <b-input placeholder="Fecha final, Ej. 10/11/2021" rounded v-model="weekfinishhum"></b-input>
+            </b-field> 
             <b-button style="margin-top: 20px;" expanded class="is-success is-rounded" type="is-light" label="Promedio" @click="weekpromediumhum"></b-button>
             <p style="margin-top: 20px; font-weight: bold" v-if="weekresultpromhum !== 'NaN'">{{weekresultpromhum}}</p>
             <p style="margin-top: 20px; font-weight: bold" v-else-if="weekresultpromhum == 'NaN'">Sin resultado</p>
